@@ -1,0 +1,212 @@
+{
+  "meta": {
+    "title": "SpaceCloud - Computing Power Wherever You Are"
+  },
+  "nav": {
+    "home": "Home",
+    "plans": "Plans",
+    "testimonials": "Testimonials",
+    "faq": "FAQ",
+    "login": "Login",
+    "register": "Sign Up"
+  },
+  "hero": {
+    "title": "Computing Power",
+    "subtitle": "Wherever You Are",
+    "description": "Experience the future of cloud computing with Space Cloud",
+    "cta": "Explore Our Plans"
+  },
+  "categories": {
+    "title": "Space Cloud is for you if you are:",
+    "gamer": {
+      "title": "Gamer",
+      "description": "Enjoy a lag-free gaming experience with maximum performance, running the most demanding games at ultra quality, without worrying about your local machine."
+    },
+    "developer": {
+      "title": "Developer",
+      "description": "Access robust machines, ideal for compiling complex projects, running heavy virtual environments, or testing your applications with speed and efficiency."
+    },
+    "designer": {
+      "title": "Designer/Editor",
+      "description": "Render videos and work with heavy graphics without delays, leveraging the power of a machine built to handle demanding creative software."
+    },
+    "dataScientist": {
+      "title": "Data Scientist",
+      "description": "Run massive data analyses, train AI models, and perform complex simulations with our advanced cloud machines' resources."
+    },
+    "streamer": {
+      "title": "Streamer",
+      "description": "Stream live with top-notch quality, without overloading your local PC, taking advantage of Space Cloud's powerful processing for a smooth streaming experience."
+    },
+    "entrepreneur": {
+      "title": "Entrepreneur",
+      "description": "Manage and scale your business with total flexibility, with machines that adapt to your workflow and ensure high performance for your IT demands."
+    }
+  },
+  "plans": {
+    "title": "Choose the ideal plan for you",
+    "aws": {
+      "estelar": {
+        "title": "Azure Basic",
+        "specs": {
+          "cpu": "4vCPU Intel Xeon Platinum 2.50Ghz",
+          "ram": "16GB RAM Memory",
+          "storage": "256GB NVME SSD",
+          "gpu": "Tesla T4 16GB GPU",
+          "system": "Spot System",
+          "shutdown": "Scheduled shutdowns (00h, 6h, 12h and 18h)",
+          "delivery": "Delivery time: 2 business days"
+        }
+      },
+      "cometa": {
+        "title": "AWS Comet",
+        "specs": {
+          "cpu": "8vCPU Intel Xeon Platinum 2.50Ghz",
+          "ram": "32GB RAM Memory",
+          "storage": "256GB NVME SSD",
+          "gpu": "Tesla T4 16GB GPU",
+          "system": "Spot System",
+          "shutdown": "Scheduled shutdowns (00h, 06h, 12h and 18h)",
+          "delivery": "Delivery time: 2 business days"
+        }
+      },
+      "galactico": {
+        "title": "AWS Galactic",
+        "specs": {
+          "cpu": "16vCPU Intel Xeon Platinum 2.50Ghz",
+          "ram": "64GB RAM Memory",
+          "storage": "256GB NVME SSD",
+          "gpu": "Tesla T4 16GB GPU",
+          "system": "Spot System",
+          "shutdown": "Scheduled shutdowns (00h, 06h, 12h and 18h)",
+          "delivery": "Delivery time: 2 business days"
+        }
+      }
+    },
+    "scg": {
+      "hourly": {
+        "title": "Hourly Plan",
+        "specs": {
+          "cpu": "Intel i5 10400F 2.90Ghz",
+          "ram": "16GB RAM Memory",
+          "storage": "1TB SSD",
+          "gpu": "GTX 1660 6GB GPU",
+          "os": "Windows 11 Pro",
+          "shutdown": "No scheduled shutdowns",
+          "delivery": "Delivery time: 2 business days"
+        }
+      },
+      "daily": {
+        "title": "Daily Plan",
+        "specs": {
+          "cpu": "Intel i5 10400F 2.90Ghz",
+          "ram": "16GB RAM Memory",
+          "storage": "1TB SSD",
+          "gpu": "GTX 1660 6GB GPU",
+          "os": "Windows 11 Pro",
+          "shutdown": "No scheduled shutdowns",
+          "delivery": "Delivery time: 2 business days"
+        }
+      },
+      "monthly": {
+        "title": "Monthly Plan",
+        "specs": {
+          "cpu": "Intel i5 10400F 2.90Ghz",
+          "ram": "16GB RAM Memory",
+          "storage": "1TB SSD",
+          "gpu": "GTX 1660 6GB GPU",
+          "os": "Windows 11 Pro",
+          "shutdown": "No scheduled shutdowns",
+          "delivery": "Delivery time: 2 business days"
+        }
+      }
+    },
+    "common": {
+      "month": "/month",
+      "hour": "/hour",
+      "day": "/day",
+      "buy": "Buy Now",
+      "mostPopular": "Most Popular",
+      "dedicated": "Dedicated Machine - No Interruptions",
+      "fileSaving": "Includes file saving",
+      "incompatibleGames": "Incompatible Games",
+      "incompatibleList": "Incompatible: FIFA23, FiveM (BAN), REDM, Valorant, Genshin Impact, MTA: Multi Theft Auto, COD Warzone"
+    }
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "subtitle": "From Customers"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "questions": {
+      "whatIs": {
+        "question": "What is a \"Cloud PC\"?",
+        "answer": "A cloud computer is a virtual machine, accessed remotely from your device, without regional limitations, offering accessibility and comfort, with all the services and functionalities of a normal computer, but without the need to have the physical product in hand."
+      },
+      "canUpdate": {
+        "question": "Can I update the system?",
+        "answer": "No, all system components including drivers were designed for the best performance of your machine, changing these settings can decrease performance and even break the machine, and it is considered misuse of our services."
+      },
+      "howWorks": {
+        "question": "How does it work?",
+        "answer": "Our system allows you to connect your device directly to a computer on our server, this computer is designed to offer the best performance for your activities, such as games, work, and much more."
+      },
+      "mobileSupport": {
+        "question": "Does it work on Android and iOS?",
+        "answer": "Yes, on Android the first access can be made through RDP or VNC and then move on to using Moonlight or Parsec. On iOS, the first access also occurs through Remote Desktop or VNC, but you cannot use Moonlight and Parsec, the only compatible streaming application for iOS is Steam Link."
+      },
+      "rdpGaming": {
+        "question": "Can I play through RDP or VNC?",
+        "answer": "No, RDP (Remote Desktop Protocol) and VNC (Virtual Network Computing) are used only for first access, allowing you to link your Parsec, Moonlight, and Steam Link accounts. After linking your accounts, you should close RDP or VNC and play exclusively through Parsec, Moonlight, or Steam Link."
+      },
+      "whyUse": {
+        "question": "Why use a cloud PC?",
+        "answer": "The expenses to have a physical computer like those from Space Cloud would be close to R$12,000, not counting maintenance costs that will come with time of use, that's why a cloud computer is much more cost-effective."
+      },
+      "spotMachine": {
+        "question": "What is a Spot Machine?",
+        "answer": "Spot Machines are a more affordable variant of standard VMs. This is because these instances can be interrupted by the Compute Engine to recover computing capacity to direct them to other VMs."
+      },
+      "fileSaving": {
+        "question": "Do I lose my files when turning off the machine?",
+        "answer": "No, our services include 100% secure file saving, just allocate these files and documents to one of the machine's hard drives, so your game files, work documents, and projects are not lost when shutting down or restarting your machine."
+      },
+      "loginQueue": {
+        "question": "Is there a login queue system?",
+        "answer": "No, to make your experience more comfortable we work without waiting queues, so you can access your machine whenever and wherever you want without taking too much of your time just for a login."
+      }
+    }
+  },
+  "footer": {
+    "description": "The future of cloud computing at your fingertips",
+    "links": {
+      "title": "Important Links",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Use",
+      "home": "Home",
+      "plans": "Plans"
+    },
+    "social": {
+      "title": "Social Media",
+      "instagram": "Instagram",
+      "discord": "Discord",
+      "whatsapp": "WhatsApp",
+      "youtube": "YouTube"
+    },
+    "copyright": "© 2024 Space Cloud. All rights reserved."
+  },
+  "modal": {
+    "purchase": {
+      "title": "Confirm Purchase",
+      "description": "You are about to purchase the plan",
+      "terms": "I have read and accept the",
+      "termsLink": "Terms of Use",
+      "and": "and",
+      "privacyLink": "Privacy Policy",
+      "of": "of Space Cloud.",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    }
+  }
+}
