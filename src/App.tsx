@@ -5,7 +5,7 @@ import {
   ChevronRight as ChevronRightIcon, MemoryStick, ChevronDown, ChevronUp,
   HelpCircle, Save, Server, Shield, Lock, Instagram, MessageCircle,
   Phone, Youtube, Gamepad, Code, Palette, LineChart, Video, Building,
-  Star, Menu, X, Zap, Monitor, Wifi, ArrowRight, Check, Search,
+  Star, Menu, X, Zap, Monitor, Gauge, Wifi, ArrowRight, Check, Search,
   TrendingUp, Users, Award, Sparkles, Timer, DollarSign, Play
 } from 'lucide-react';
 import { AnimatedSection } from './components/AnimatedSection';
@@ -47,11 +47,11 @@ function PurchaseNotification() {
   const [current, setCurrent] = useState(0);
 
   const notifications = [
-    { name: 'Lucas M.', plan: 'Azure Standard', city: 'Sao Paulo', time: '2 min' },
-    { name: 'Gabriel S.', plan: 'Azure Deluxe', city: 'Rio de Janeiro', time: '5 min' },
-    { name: 'Ana C.', plan: 'Azure Basic', city: 'Belo Horizonte', time: '8 min' },
-    { name: 'Pedro H.', plan: 'Azure Standard', city: 'Curitiba', time: '12 min' },
-    { name: 'Matheus R.', plan: 'Azure Deluxe', city: 'Brasilia', time: '15 min' },
+    { name: 'Lucas M.', plan: 'Azuli', city: 'Sao Paulo', time: '2 min' },
+    { name: 'Gabriel S.', plan: 'Rubi', city: 'Rio de Janeiro', time: '5 min' },
+    { name: 'Ana C.', plan: 'Iron', city: 'Belo Horizonte', time: '8 min' },
+    { name: 'Pedro H.', plan: 'Azuli', city: 'Curitiba', time: '12 min' },
+    { name: 'Matheus R.', plan: 'Rubi', city: 'Brasilia', time: '15 min' },
   ];
 
   useEffect(() => {
@@ -102,57 +102,103 @@ function ProviderToggle({ activeProvider, onToggle }: { activeProvider: string; 
     <div className="flex justify-center mb-10">
       <div className="bg-white/[0.03] p-1.5 rounded-2xl inline-flex border border-white/5">
         <button
-          onClick={() => onToggle('AZURE')}
+          onClick={() => onToggle('GOOGLE')}
           className={`px-8 py-3 rounded-xl transition-all duration-300 text-sm font-semibold ${
-            activeProvider === 'AZURE'
+            activeProvider === 'GOOGLE'
               ? 'bg-gradient-to-r from-brand-600 to-violet-600 text-white shadow-lg shadow-brand-500/20'
               : 'text-gray-400 hover:text-white'
           }`}
         >
-          AZURE
+          GOOGLE CLOUD
         </button>
         <button
-          onClick={() => onToggle('SCG')}
+          onClick={() => onToggle('AWS')}
           className={`px-8 py-3 rounded-xl transition-all duration-300 text-sm font-semibold ${
-            activeProvider === 'SCG'
+            activeProvider === 'AWS'
               ? 'bg-gradient-to-r from-brand-600 to-violet-600 text-white shadow-lg shadow-brand-500/20'
               : 'text-gray-400 hover:text-white'
           }`}
         >
-          SCG
+          AWS
         </button>
       </div>
     </div>
   );
 }
 
-function PlanCard({ title, price, priceUnit = "/mes", specs, isPopular = false, link, isSpot = true, purchaseEnabled = true }: any) {
+function PreSaleCountdown({ timeLeft, ended }: { timeLeft: number; ended: boolean }) {
+  if (ended) {
+    return (
+      <div className="mt-6 inline-flex items-center gap-2 rounded-xl bg-accent-500/10 border border-accent-500/30 px-5 py-3 text-accent-300 text-sm font-medium">
+        Pre-venda encerrada. Entraremos em contato com os primeiros clientes.
+      </div>
+    );
+  }
+
+  const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+
+  const pad = (n: number) => String(n).padStart(2, '0');
+
+  return (
+    <div className="mt-6 inline-flex flex-col items-center gap-3 rounded-2xl bg-white/[0.03] border border-brand-500/25 px-5 py-4">
+      <p className="text-xs uppercase tracking-[0.18em] text-brand-400 font-semibold">Pre-venda por tempo limitado</p>
+      <div className="flex items-center gap-2 text-white">
+        <span className="rounded-lg bg-surface-300 border border-white/10 px-3 py-2 text-lg font-bold">{pad(days)}d</span>
+        <span className="text-gray-500">:</span>
+        <span className="rounded-lg bg-surface-300 border border-white/10 px-3 py-2 text-lg font-bold">{pad(hours)}h</span>
+        <span className="text-gray-500">:</span>
+        <span className="rounded-lg bg-surface-300 border border-white/10 px-3 py-2 text-lg font-bold">{pad(minutes)}m</span>
+      </div>
+      <p className="text-xs text-gray-400">Entrega prevista das VMs em até 15 dias após o fim da pre-venda.</p>
+    </div>
+  );
+}
+
+function PlanCard({ title, price, priceUnit = "/mes", specs, isPopular = false, link, isSpot = true, purchaseEnabled = true, preSaleMode = true }: any) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const incompatibleGames = "Incompativeis: FIFA23, FiveM (BAN), REDM, Valorant, Genshin Impact, MTA: Multi Theft Auto, COD Warzone";
+  const canPurchase = Boolean(link);
 
   const handlePurchase = () => {
-    window.location.href = link;
+    if (canPurchase && link) {
+      window.location.href = link;
+    }
   };
 
   return (
     <>
-      <AnimatedSection animation="scale" className={`relative rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.02] ${isPopular ? 'z-10' : ''}`}>
+      <AnimatedSection
+        animation="scale"
+        className={`relative rounded-2xl overflow-visible transition-all duration-500 hover:scale-[1.02] ${
+          isPopular ? 'z-10' : ''
+        }`}
+      >
         {isPopular && (
           <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-b from-brand-400 via-violet-500 to-brand-400">
             <div className="absolute inset-[1px] rounded-2xl bg-surface-300" />
           </div>
         )}
 
-        <div className={`relative p-6 md:p-8 ${isPopular ? '' : 'border border-white/[0.06] rounded-2xl bg-white/[0.02]'}`}>
-          {isPopular && (
-            <div className="absolute -top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <span className="badge">Mais Popular</span>
-            </div>
-          )}
-
-          <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
+        <div
+          className={`pricing-card ${
+            isPopular
+              ? 'pricing-card--popular ring-1 ring-cyan-400/50 shadow-[0_30px_90px_rgba(34,211,238,0.25)]'
+              : 'border border-white/10 bg-[#0c1017]'
+          }`}
+        >
+          <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2 flex-wrap">
+            {title}
+            {preSaleMode && (
+              <span className="text-[11px] px-3 py-1 rounded-full border border-yellow-500/30 bg-yellow-500/10 text-yellow-300 whitespace-nowrap leading-none block">Pré-venda</span>
+            )}
+            {isPopular && (
+              <span className="badge text-[11px] px-4 py-1 whitespace-nowrap leading-none block">Mais popular</span>
+            )}
+          </h3>
 
           <div className="flex items-baseline gap-1 mb-6">
             <span className="text-sm text-gray-400">R$</span>
@@ -169,31 +215,25 @@ function PlanCard({ title, price, priceUnit = "/mes", specs, isPopular = false, 
           <ul className="space-y-3 mb-8">
             {specs.map((spec: any, index: number) => (
               <li key={index} className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-brand-500/10 flex items-center justify-center flex-shrink-0">
-                  <spec.icon className="w-4 h-4 text-brand-400" />
+                <div className="spec-icon bg-cyan-500/10 border border-cyan-400/20">
+                  <spec.icon className="w-4 h-4 text-cyan-300" />
                 </div>
-                <span className="text-gray-300 text-sm">{spec.text}</span>
+                <span className="text-gray-200 text-sm">{spec.text}</span>
               </li>
             ))}
-            <li className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-brand-500/10 flex items-center justify-center flex-shrink-0">
-                <Save className="w-4 h-4 text-brand-400" />
-              </div>
-              <span className="text-gray-300 text-sm">Salvamento de arquivos incluso</span>
-            </li>
             <li className="relative">
               <div
                 className="flex items-center gap-3 cursor-help"
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
               >
-                <div className="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center flex-shrink-0">
-                  <HelpCircle className="w-4 h-4 text-orange-400" />
+                <div className="spec-icon spec-icon--warning">
+                  <HelpCircle className="w-4 h-4 text-orange-300" />
                 </div>
-                <span className="text-gray-400 text-sm">Jogos Incompativeis</span>
+                <span className="text-gray-300 text-sm">Jogos Incompativeis</span>
               </div>
               {showTooltip && (
-                <div className="absolute z-10 w-72 p-4 mt-2 left-0 glass-card text-sm text-gray-300">
+                <div className="absolute z-10 w-72 p-4 mt-2 left-0 glass-card text-sm text-gray-300 shadow-[0_20px_60px_rgba(0,0,0,0.45)]">
                   {incompatibleGames}
                 </div>
               )}
@@ -201,19 +241,19 @@ function PlanCard({ title, price, priceUnit = "/mes", specs, isPopular = false, 
           </ul>
 
           <button
-            onClick={() => (purchaseEnabled ? setShowModal(true) : null)}
-            disabled={!purchaseEnabled}
-            className={`w-full py-3.5 px-6 rounded-xl font-semibold transition-all duration-300 text-center flex items-center justify-center gap-2 ${
-              purchaseEnabled
+            onClick={() => (canPurchase ? setShowModal(true) : null)}
+            disabled={!canPurchase}
+            className={`pricing-button ${
+              canPurchase
                 ? isPopular
-                  ? 'bg-gradient-to-r from-brand-500 to-violet-600 text-white hover:shadow-lg hover:shadow-brand-500/25 hover:-translate-y-0.5'
-                  : 'bg-white/[0.06] text-white hover:bg-white/[0.1] border border-white/10'
-                : 'bg-white/[0.03] text-gray-500 cursor-not-allowed'
-            }`}
+                  ? 'pricing-button--primary'
+                  : 'pricing-button--ghost'
+                : 'pricing-button--disabled'
+            } ${canPurchase ? 'shadow-[0_16px_50px_rgba(34,211,238,0.25)]' : ''}`}
           >
-            {purchaseEnabled ? (
-              <>Comecar agora <ArrowRight className="w-4 h-4" /></>
-            ) : 'Em Breve'}
+            {canPurchase ? (
+              <>{preSaleMode ? 'Garantir pre-venda' : 'Comprar agora'} <ArrowRight className="w-4 h-4" /></>
+            ) : 'Sem link'}
           </button>
         </div>
       </AnimatedSection>
@@ -223,6 +263,7 @@ function PlanCard({ title, price, priceUnit = "/mes", specs, isPopular = false, 
         onClose={() => setShowModal(false)}
         onConfirm={handlePurchase}
         planTitle={title}
+        preSaleMode={preSaleMode}
       />
     </>
   );
@@ -247,7 +288,7 @@ function SavingsCalculator() {
         <div className="text-center mb-8">
           <span className="section-label">Calculadora de Economia</span>
           <h3 className="text-2xl md:text-3xl font-bold text-white mt-2">Quanto voce economiza com a SpaceCloud?</h3>
-          <p className="text-gray-400 mt-2">Compare os custos de um PC gamer fisico com nosso plano Azure Standard</p>
+          <p className="text-gray-400 mt-2">Compare os custos de um PC gamer fisico com nosso plano Google Cloud 8 vCPU</p>
         </div>
 
         <div className="mb-8">
@@ -277,7 +318,7 @@ function SavingsCalculator() {
             <Cloud className="w-6 h-6 text-brand-400 mx-auto mb-2" />
             <p className="text-xs text-gray-400 mb-1">SpaceCloud</p>
             <p className="text-2xl font-bold text-brand-400">R$ {totalCloud.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-            <p className="text-xs text-gray-500 mt-1">Azure Standard - R$ 119,90/mes</p>
+            <p className="text-xs text-gray-500 mt-1">Google Cloud 8 vCPU - R$ 119,90/mes</p>
           </div>
 
           <div className="rounded-xl bg-accent-500/5 border border-accent-500/10 p-5 text-center">
@@ -344,6 +385,18 @@ function FAQ() {
       {
         question: 'Existe fila de login?',
         answer: 'Nao. Trabalhamos sem filas de espera. Acesse sua maquina quando e onde quiser, instantaneamente. Sem espera, sem burocracia.'
+      },
+      {
+        question: 'Como funciona a fila prioritaria da pre-venda?',
+        answer: 'Pedidos confirmados entram na fila prioritaria de ativacao. Assim que as VMs forem liberadas, os clientes da pre-venda sao ativados primeiro, respeitando a ordem de confirmacao.'
+      },
+      {
+        question: 'Se eu cancelar, perco a prioridade?',
+        answer: 'Sim. Em caso de cancelamento/reembolso, a vaga prioritaria e liberada e a recompra futura fica sujeita a nova disponibilidade e nova fila.'
+      },
+      {
+        question: 'O prazo de 15 dias pode ser menor?',
+        answer: 'Sim. O prazo informado e o limite maximo de ativacao. Em muitos casos, a liberacao pode ocorrer antes desse periodo.'
       },
     ],
   };
@@ -622,7 +675,21 @@ function Footer() {
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeProvider, setActiveProvider] = useState('AZURE');
+  const [activeProvider, setActiveProvider] = useState('GOOGLE');
+
+  const PRE_SALE_MODE = true;
+  const presaleDeadline = new Date('2026-02-24T23:59:59Z').getTime();
+  const [timeLeft, setTimeLeft] = useState(() => Math.max(0, presaleDeadline - Date.now()));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(Math.max(0, presaleDeadline - Date.now()));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [presaleDeadline]);
+
+  const presaleEnded = timeLeft <= 0;
 
   const userCategories = [
     { icon: Gamepad, title: "Gamer", description: "Jogue os titulos mais pesados em qualidade ultra, sem travamentos. Sua maquina local nao importa mais." },
@@ -633,103 +700,108 @@ function App() {
     { icon: Building, title: "Empreendedor", description: "Escale seu negocio com maquinas flexiveis que acompanham suas demandas de TI." },
   ];
 
-  const AZUREPlans = [
+  const GOOGLEPlans = [
     {
-      title: "Azure Basic",
+      title: "Iron",
       price: "99,90",
-      link: "https://www.spacecloudbr.com/painel/store/azure/azure-basic-4vcpu",
+      link: "https://www.spacecloudbr.com/painel/store/space-nw-google/iron-nw",
       specs: [
-        { icon: Cpu, text: "4vCPU AMD Epyc 2.44Ghz" },
-        { icon: MemoryStick, text: "28GB Memoria RAM" },
-        { icon: HardDrive, text: "SSD NVME 256GB" },
-        { icon: Cpu, text: "GPU Tesla T4 16GB" },
-        { icon: Cloud, text: "Sistema Spot" },
-        { icon: Clock, text: "Desligamentos programados (00h, 6h, 12h e 18h)" },
-        { icon: Power, text: "Entrega em 2 dias uteis" },
+        { icon: Server, text: "Servidores - Sao Paulo BR" },
+        { icon: Shield, text: "Windows 10 Pro Booster" },
+        { icon: Cpu, text: "6vCPU Intel Xeon 2.20Ghz" },
+        { icon: Gauge, text: "GPU Tesla T4 16GB (simula RTX 2060)" },
+        { icon: MemoryStick, text: "16GB Memoria RAM" },
+        { icon: HardDrive, text: "256GB SSD" },
+        { icon: Save, text: "Contem salvamento de arquivos" },
       ],
     },
     {
-      title: "Azure Standard",
+      title: "Azuli",
       price: "119,90",
-      link: "https://www.spacecloudbr.com/painel/store/azure/azure-standard-8vcpu",
+      link: "https://www.spacecloudbr.com/painel/store/space-nw-google/azuli-nw",
       specs: [
-        { icon: Cpu, text: "8vCPU AMD Epyc 2.44Ghz" },
-        { icon: MemoryStick, text: "56GB Memoria RAM" },
-        { icon: HardDrive, text: "SSD NVME 256GB" },
-        { icon: Cpu, text: "GPU Tesla T4 16GB" },
-        { icon: Cloud, text: "Sistema Spot" },
-        { icon: Clock, text: "Desligamentos programados (00h, 06h, 12h e 18h)" },
-        { icon: Power, text: "Entrega em 2 dias uteis" },
+        { icon: Server, text: "Servidores - Sao Paulo BR" },
+        { icon: Shield, text: "Windows 10 Pro Booster" },
+        { icon: Cpu, text: "8vCPU Intel Xeon 2.20Ghz" },
+        { icon: Gauge, text: "GPU Tesla T4 16GB (simula RTX 2060)" },
+        { icon: MemoryStick, text: "22GB Memoria RAM" },
+        { icon: HardDrive, text: "256GB SSD" },
+        { icon: Save, text: "Contem salvamento de arquivos" },
       ],
+      isPopular: true,
     },
     {
-      title: "Azure Deluxe",
+      title: "Rubi",
       price: "199,90",
-      link: "https://www.spacecloudbr.com/painel/store/azure/azure-deluxe-16vcpu",
+      link: "https://www.spacecloudbr.com/painel/store/space-nw-google/rubi-nw",
       specs: [
-        { icon: Cpu, text: "16vCPU AMD Epyc 2.44Ghz" },
-        { icon: MemoryStick, text: "112GB Memoria RAM" },
-        { icon: HardDrive, text: "SSD NVME 256GB" },
-        { icon: Cpu, text: "GPU Tesla T4 16GB" },
-        { icon: Cloud, text: "Sistema Spot" },
-        { icon: Clock, text: "Desligamentos programados (00h, 06h, 12h e 18h)" },
-        { icon: Power, text: "Entrega em 2 dias uteis" },
+        { icon: Server, text: "Servidores - Sao Paulo BR" },
+        { icon: Shield, text: "Windows 10 Pro Booster" },
+        { icon: Cpu, text: "16vCPU Intel Xeon 2.20Ghz" },
+        { icon: Gauge, text: "GPU Tesla T4 16GB (simula RTX 2060)" },
+        { icon: MemoryStick, text: "30GB Memoria RAM" },
+        { icon: HardDrive, text: "256GB SSD" },
+        { icon: Save, text: "Contem salvamento de arquivos" },
       ],
     },
   ];
 
-  const SCGPlans = [
+  const AWSPlans = [
     {
-      title: "Plano Hora",
-      price: "6,97",
-      priceUnit: "/hora",
-      link: "https://www.spacecloudbr.com/painel/store/hourly-plan",
-      isSpot: false,
+      title: "Presencer",
+      price: "102,90",
+      purchaseEnabled: true,
+      link: "https://www.spacecloudbr.com/painel/store/space-new-era-aws/presencer-nw",
       specs: [
-        { icon: Cpu, text: "Intel i5 10400F 2.90Ghz" },
+        { icon: Server, text: "Servidores - Sao Paulo BR" },
+        { icon: Shield, text: "Windows 10 Pro Booster" },
+        { icon: Cpu, text: "4vCPU Intel Xeon Platinum 2.50Ghz" },
+        { icon: Gauge, text: "GPU Tesla T4 16GB (simula RTX 2060)" },
         { icon: MemoryStick, text: "16GB Memoria RAM" },
-        { icon: HardDrive, text: "SSD 1TB" },
-        { icon: Server, text: "GPU GTX 1660 6GB" },
-        { icon: Shield, text: "Windows 11 Pro" },
-        { icon: Clock, text: "Sem desligamentos programados" },
-        { icon: Power, text: "Entrega em 2 dias uteis" },
+        { icon: HardDrive, text: "256GB NVME" },
+        { icon: Cloud, text: "Contem Spot (desligamentos aleatorios)" },
+        { icon: Clock, text: "Desligamentos planejados: 00:00, 06:00, 18:00" },
+        { icon: Save, text: "Contem salvamento de arquivos" },
       ],
     },
     {
-      title: "Plano Diario",
-      price: "19,90",
-      priceUnit: "/dia",
-      link: "https://www.spacecloudbr.com/painel/store/daily-plan",
-      isSpot: false,
+      title: "Archangel",
+      price: "159,90",
+      purchaseEnabled: true,
+      isPopular: true,
+      link: "https://www.spacecloudbr.com/painel/store/space-new-era-aws/archangel-new",
       specs: [
-        { icon: Cpu, text: "Intel i5 10400F 2.90Ghz" },
-        { icon: MemoryStick, text: "16GB Memoria RAM" },
-        { icon: HardDrive, text: "SSD 1TB" },
-        { icon: Server, text: "GPU GTX 1660 6GB" },
-        { icon: Shield, text: "Windows 11 Pro" },
-        { icon: Clock, text: "Sem desligamentos programados" },
-        { icon: Power, text: "Entrega em 2 dias uteis" },
+        { icon: Server, text: "Servidores - Sao Paulo BR" },
+        { icon: Shield, text: "Windows 10 Pro Booster" },
+        { icon: Cpu, text: "8vCPU Intel Xeon Platinum 2.50Ghz" },
+        { icon: Gauge, text: "GPU Tesla T4 16GB (simula RTX 2060)" },
+        { icon: MemoryStick, text: "32GB Memoria RAM" },
+        { icon: HardDrive, text: "256GB NVME" },
+        { icon: Cloud, text: "Contem Spot (desligamentos aleatorios)" },
+        { icon: Clock, text: "Desligamentos planejados: 06:00 e 18:00" },
+        { icon: Save, text: "Contem salvamento de arquivos" },
       ],
     },
     {
-      title: "Plano Mensal",
-      price: "169,90",
-      priceUnit: "/mes",
-      link: "https://www.spacecloudbr.com/painel/store/monthly-plan",
-      isSpot: false,
+      title: "Eternum",
+      price: "225,90",
+      purchaseEnabled: true,
+      link: "https://www.spacecloudbr.com/painel/store/space-new-era-aws/eternum-new",
       specs: [
-        { icon: Cpu, text: "Intel i5 10400F 2.90Ghz" },
-        { icon: MemoryStick, text: "16GB Memoria RAM" },
-        { icon: HardDrive, text: "SSD 1TB" },
-        { icon: Server, text: "GPU GTX 1660 6GB" },
-        { icon: Shield, text: "Windows 11 Pro" },
-        { icon: Clock, text: "Sem desligamentos programados" },
-        { icon: Power, text: "Entrega em 2 dias uteis" },
+        { icon: Server, text: "Servidores - Sao Paulo BR" },
+        { icon: Shield, text: "Windows 10 Pro Booster" },
+        { icon: Cpu, text: "16vCPU Intel Xeon Platinum 2.50Ghz" },
+        { icon: Gauge, text: "GPU Tesla T4 16GB (simula RTX 2060)" },
+        { icon: MemoryStick, text: "64GB Memoria RAM" },
+        { icon: HardDrive, text: "256GB NVME" },
+        { icon: Cloud, text: "Contem Spot (desligamentos aleatorios)" },
+        { icon: Clock, text: "Desligamentos planejados: 00:00, 06:00, 18:00" },
+        { icon: Save, text: "Contem salvamento de arquivos" },
       ],
     },
   ];
 
-  const activePlans = activeProvider === 'AZURE' ? AZUREPlans : SCGPlans;
+  const activePlans = activeProvider === 'GOOGLE' ? GOOGLEPlans : AWSPlans;
 
   return (
     <>
@@ -790,14 +862,15 @@ function App() {
 
                 <AnimatedSection animation="slideUp" delay={0.2}>
                   <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                    Jogue os titulos mais pesados, trabalhe com softwares profissionais e crie sem barreiras — tudo direto do seu navegador ou celular. De R$ 99,90/mes.
+                    Jogue os titulos mais pesados, trabalhe com softwares profissionais e crie sem barreiras — tudo direto do seu navegador ou celular. <span className="whitespace-nowrap">De R$ 99,90/mes.</span>
                   </p>
                 </AnimatedSection>
 
                 <AnimatedSection animation="scale" delay={0.3}>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  {PRE_SALE_MODE && <PreSaleCountdown timeLeft={timeLeft} ended={presaleEnded} />}
+                  <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${PRE_SALE_MODE ? 'mt-6' : ''}`}>
                     <a href="#plans" className="btn-primary inline-flex items-center gap-2 text-lg px-8 py-4">
-                      Comecar agora
+                      {PRE_SALE_MODE ? 'Garantir vaga na pre-venda' : 'Comecar agora'}
                       <ArrowRight className="w-5 h-5" />
                     </a>
                     <a href="#como-funciona" className="btn-secondary inline-flex items-center gap-2 text-lg px-8 py-4">
@@ -819,7 +892,7 @@ function App() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Check className="w-4 h-4 text-accent-500" />
-                      <span>Entrega em 2 dias</span>
+                      <span>{PRE_SALE_MODE ? 'Pre-venda: entrega prevista em ate 15 dias' : 'Entrega em 2 dias'}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Check className="w-4 h-4 text-accent-500" />
@@ -1028,29 +1101,38 @@ function App() {
                 <AnimatedSection animation="slideUp" className="text-center mb-4">
                   <span className="section-label">Planos e precos</span>
                   <h2 className="section-title">Escolha o plano ideal para voce</h2>
-                  <p className="section-subtitle">Todos os planos incluem salvamento de arquivos, GPU dedicada e suporte brasileiro.</p>
+                  <p className="section-subtitle">{PRE_SALE_MODE ? 'Todos os planos desta pagina sao de pre-venda. Entrega prevista das VMs em ate 15 dias.' : 'Todos os planos incluem salvamento de arquivos, GPU dedicada e suporte brasileiro.'}</p>
                 </AnimatedSection>
+
+                {PRE_SALE_MODE && (
+                  <div className="max-w-4xl mx-auto mb-6 rounded-2xl border border-brand-500/25 bg-brand-500/5 p-4 text-center">
+                    <p className="text-sm text-gray-200">
+                      Ao garantir agora, sua vaga entra na <span className="text-brand-400 font-semibold">fila prioritaria de ativacao</span>. O prazo de 15 dias e o maximo e pode ser antes.
+                    </p>
+                    <p className="text-xs text-gray-400 mt-1.5">
+                      Em caso de cancelamento, a vaga prioritaria e liberada.
+                    </p>
+                  </div>
+                )}
 
                 <ProviderToggle activeProvider={activeProvider} onToggle={setActiveProvider} />
 
                 <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                  {activeProvider === 'AZURE' ? (
-                    activePlans.map((plan, index) => (
-                      <PlanCard key={index} {...plan} isPopular={index === 1} purchaseEnabled={true} />
-                    ))
-                  ) : (
-                    [0, 1, 2].map((index) => (
-                      <div key={index} className="relative">
-                        <div className="rounded-2xl border border-white/[0.04] p-6 h-[500px] flex flex-col items-center justify-center overflow-hidden">
-                          <div className="absolute inset-0 bg-surface-400/95 backdrop-blur-xl" />
-                          <div className="absolute inset-0 bg-gradient-to-br from-surface-500 via-brand-950/30 to-surface-500" />
-                          <div className="relative z-10 bg-white/[0.05] backdrop-blur-sm px-8 py-4 rounded-2xl text-white font-bold text-xl border border-brand-500/20 shadow-glow-brand">
-                            Em Breve
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
+                  {(activeProvider === 'GOOGLE' ? GOOGLEPlans : AWSPlans).map((plan, index, arr) => {
+                    const middleIndex = Math.floor(arr.length / 2);
+                    const isPopular = index === middleIndex;
+                    const purchaseEnabled = plan.purchaseEnabled ?? true;
+
+                    return (
+                      <PlanCard
+                        key={`${activeProvider}-${plan.title}`}
+                        {...plan}
+                        isPopular={isPopular}
+                        purchaseEnabled={purchaseEnabled}
+                        preSaleMode={PRE_SALE_MODE}
+                      />
+                    );
+                  })}
                 </div>
               </div>
             </section>
@@ -1061,9 +1143,9 @@ function App() {
                 <AnimatedSection animation="slideUp">
                   <div className="glass-card p-8 md:p-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                     <div>
-                      <span className="section-label">Disponivel agora</span>
-                      <h3 className="text-2xl font-bold text-white mt-1">Sua maquina pronta em minutos</h3>
-                      <p className="text-gray-400 mt-2 text-sm">Sem filas, com salvamento de arquivos e suporte dedicado.</p>
+                      <span className="section-label">{PRE_SALE_MODE ? 'Pre-venda com prioridade' : 'Disponivel agora'}</span>
+                      <h3 className="text-2xl font-bold text-white mt-1">{PRE_SALE_MODE ? 'Garanta sua vaga na fila prioritaria' : 'Sua maquina pronta em minutos'}</h3>
+                      <p className="text-gray-400 mt-2 text-sm">{PRE_SALE_MODE ? 'Ativacao prevista em ate 15 dias (podendo ocorrer antes), com salvamento de arquivos e suporte dedicado.' : 'Sem filas, com salvamento de arquivos e suporte dedicado.'}</p>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3">
                       <a href="#plans" className="btn-primary text-center">Ver planos</a>
@@ -1107,13 +1189,13 @@ function App() {
                 <AnimatedSection animation="slideUp">
                   <span className="badge mb-6 inline-flex items-center gap-2">
                     <Zap className="w-3.5 h-3.5" />
-                    Comece agora mesmo
+                    {PRE_SALE_MODE ? 'Pre-venda ativa' : 'Comece agora mesmo'}
                   </span>
                   <h2 className="section-title max-w-3xl mx-auto">
-                    Pronto para ter o PC dos seus sonhos na nuvem?
+                    {PRE_SALE_MODE ? 'Garanta sua vaga prioritaria na SpaceCloud' : 'Pronto para ter o PC dos seus sonhos na nuvem?'}
                   </h2>
                   <p className="text-gray-400 text-lg max-w-xl mx-auto mt-4 mb-8">
-                    Crie sua conta gratis, escolha um plano e comece a jogar em minutos. Sem compromisso — cancele quando quiser.
+                    {PRE_SALE_MODE ? 'Ativacao em ate 15 dias (podendo ocorrer antes). Ao confirmar seu plano, voce entra na fila prioritaria de liberacao.' : 'Crie sua conta gratis, escolha um plano e comece a jogar em minutos. Sem compromisso — cancele quando quiser.'}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="https://spacecloudbr.com/painel/register.php" className="btn-primary inline-flex items-center justify-center gap-2 text-lg px-10 py-4">

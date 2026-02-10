@@ -9,9 +9,10 @@ interface ConfirmationModalProps {
   onClose: () => void;
   onConfirm: () => void;
   planTitle: string;
+  preSaleMode?: boolean;
 }
 
-export function ConfirmationModal({ isOpen, onClose, onConfirm, planTitle }: ConfirmationModalProps) {
+export function ConfirmationModal({ isOpen, onClose, onConfirm, planTitle, preSaleMode = true }: ConfirmationModalProps) {
   const [accepted, setAccepted] = React.useState(false);
   const [showTerms, setShowTerms] = React.useState(false);
   const [showPrivacy, setShowPrivacy] = React.useState(false);
@@ -82,9 +83,20 @@ export function ConfirmationModal({ isOpen, onClose, onConfirm, planTitle }: Con
           </div>
 
           <div className="p-6">
-            <p className="text-gray-300 mb-6">
+            <p className="text-gray-300 mb-4">
               Voce esta prestes a adquirir o plano <span className="font-semibold text-brand-400">{planTitle}</span>
             </p>
+
+            {preSaleMode && (
+              <div className="mb-5 rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-4">
+                <p className="text-sm text-yellow-200 font-medium mb-2">Informacoes da pre-venda</p>
+                <ul className="space-y-1.5 text-xs text-gray-300">
+                  <li>• Sua compra garante vaga na fila prioritaria de ativacao.</li>
+                  <li>• Prazo de ativacao: ate 15 dias (podendo ocorrer antes).</li>
+                  <li>• Em caso de cancelamento, a prioridade da vaga e perdida.</li>
+                </ul>
+              </div>
+            )}
 
             <div className="mb-6">
               <label className="flex items-start gap-3 cursor-pointer">
