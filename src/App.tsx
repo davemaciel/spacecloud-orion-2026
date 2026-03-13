@@ -862,7 +862,7 @@ function App() {
 
                 <AnimatedSection animation="slideUp" delay={0.2}>
                   <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                    Jogue os titulos mais pesados, trabalhe com softwares profissionais e crie sem barreiras — tudo direto do seu navegador ou celular. <span className="whitespace-nowrap">De R$ 99,90/mes.</span>
+                    Jogue os titulos mais pesados, trabalhe com softwares profissionais e crie sem barreiras, tudo direto do seu navegador ou celular. <span className="whitespace-nowrap">De R$ 99,90/mes.</span>
                   </p>
                 </AnimatedSection>
 
